@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.87
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutlookSearch", "OutlookSearch.csproj", "{6FB7D46F-9F66-4AF1-A6A4-CC391A862BC5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6FB7D46F-9F66-4AF1-A6A4-CC391A862BC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FB7D46F-9F66-4AF1-A6A4-CC391A862BC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FB7D46F-9F66-4AF1-A6A4-CC391A862BC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FB7D46F-9F66-4AF1-A6A4-CC391A862BC5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8F1E1934-907A-43D7-87FE-93878A1DB1E6}
+	EndGlobalSection
+EndGlobal

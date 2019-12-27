@@ -1,0 +1,6 @@
+C:\dotnetcore\outlook\outlook\bin\Release\outlook.exe.config
+C:\dotnetcore\outlook\outlook\bin\Release\outlook.exe
+C:\dotnetcore\outlook\outlook\bin\Release\outlook.pdb
+C:\dotnetcore\outlook\outlook\obj\Release\outlook.exe
+C:\dotnetcore\outlook\outlook\obj\Release\outlook.pdb
+C:\dotnetcore\outlook\outlook\obj\Release\outlook.csprojAssemblyReference.cache

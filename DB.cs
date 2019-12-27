@@ -1,0 +1,121 @@
+﻿
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using Microsoft.Data.Sqlite;
+
+namespace outlook
+{
+    public class DB
+    {
+        private static SqliteConnection connection;
+        public DB()
+        {
+            connection = new SqliteConnection("" + new SqliteConnectionStringBuilder { DataSource = "DB" });
+            connection.Open();
+            CriarTabelas();
+        }
+
+        private void CriarTabelas()
+        {
+            string sql = @"CREATE TABLE IF NOT EXISTS email(
+                        EntryID text PRIMARY KEY,
+                        SenderName text,
+                        Subject text,
+                        Date text);";
+
+            SqliteTransaction transaction = connection.BeginTransaction();
+            SqliteCommand command = connection.CreateCommand();
+            command.Transaction = transaction;
+            command.CommandText = sql;
+            _ = command.ExecuteNonQuery();
+            transaction.Commit();
+
+        }
+
+        public bool Inserir(string EntryID, string SenderName, string Subject, string Date)
+        {
+            if(ObterPorID(EntryID).Count == 0)
+            {
+                SqliteTransaction transaction = connection.BeginTransaction();
+                SqliteCommand command = connection.CreateCommand();
+                command.Transaction = transaction;
+                command.CommandText = "insert into email ( EntryID, SenderName, Subject, Date ) values ( $EntryID, $SenderName, $Subject, $Date ) ";
+                command.Parameters.AddWithValue("$EntryID", EntryID);
+                command.Parameters.AddWithValue("$SenderName", SenderName);
+                command.Parameters.AddWithValue("$Subject", Subject);
+                command.Parameters.AddWithValue("$Date", Date);
+                int ret = command.ExecuteNonQuery();
+                transaction.Commit();
+
+
+                if (ret == 0)
+                    return true;
+                else
+                    return false;
+
+            }
+
+            return true;
+
+        }
+
+
+        public List<DataRow> ObterTodos(string SenderName="", string Subject=null)
+        {
+
+            SqliteCommand command = connection.CreateCommand();
+            command.CommandText = @"SELECT * FROM email 
+                                    where 
+                                    ($SenderName = '' or upper(SenderName) like $SenderName) AND
+                                    ($Subject = '' or upper(Subject) like $Subject)
+                                    order by Date desc";
+
+            if (String.IsNullOrEmpty(SenderName))
+                command.Parameters.AddWithValue("$SenderName", SenderName);
+            else
+                command.Parameters.AddWithValue("$SenderName", "%" + SenderName + "%");
+
+            if (String.IsNullOrEmpty(Subject))
+                command.Parameters.AddWithValue("$Subject", Subject);
+            else
+                command.Parameters.AddWithValue("$Subject", "%" + Subject + "%");
+
+            var reader = command.ExecuteReader();
+
+            var dt = new DataTable();
+            dt.Load(reader);
+
+            List<DataRow> dr = dt.AsEnumerable().ToList();
+
+            string query = command.CommandText;
+
+
+            return dr;
+
+        }
+
+        public List<DataRow> ObterPorID(string ID)
+        {
+
+            SqliteCommand command = connection.CreateCommand();
+            command.CommandText = "SELECT * FROM email where EntryID = $EntryID";
+            command.Parameters.AddWithValue("$EntryID", ID);
+            var reader = command.ExecuteReader();
+
+            var dt = new DataTable();
+            dt.Load(reader);
+
+            List<DataRow> dr = dt.AsEnumerable().ToList();
+
+
+            return dr;
+
+        }
+
+
+
+    }
+}

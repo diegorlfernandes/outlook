@@ -1,0 +1,6 @@
+C:\dotnetcore\outlook\outlook\bin\Debug\outlook.exe.config
+C:\dotnetcore\outlook\outlook\bin\Debug\outlook.exe
+C:\dotnetcore\outlook\outlook\bin\Debug\outlook.pdb
+C:\dotnetcore\outlook\outlook\obj\Debug\outlook.exe
+C:\dotnetcore\outlook\outlook\obj\Debug\outlook.pdb
+C:\dotnetcore\outlook\outlook\obj\Debug\outlook.csprojAssemblyReference.cache
