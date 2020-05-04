@@ -13,10 +13,11 @@ namespace outlook
         private static  EmailSearch ES = new EmailSearch();
         static void Main(string[] args)
         {
-            Console.WriteLine("V1");
+            Console.WriteLine("V2");
 
             //1 - Todos os Emails
             //2 - Carga da caixa de entrada
+            //3 - interface
 
             string res;
 
@@ -25,11 +26,11 @@ namespace outlook
 
             Int16 opt = Convert.ToInt16(res);
 
+            if(opt != 3)
+                ES.Indexar((Enum.TiposProcessamentos)opt);
 
-            ES.Indexar((Enum.TiposProcessamentos)opt);
 
-
-            if (opt == 2)
+            if (opt == 3)
             {
 
                 Filtrar(); 
