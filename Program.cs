@@ -13,16 +13,15 @@ namespace outlook
         private static  EmailSearch ES = new EmailSearch();
         static void Main(string[] args)
         {
-
+            Console.WriteLine("V1");
 
             //1 - Todos os Emails
             //2 - Carga da caixa de entrada
 
             string res;
 
-            //res = args[0];
-
-            res = "2";
+            //res = "1";
+            res = args[0];
 
             Int16 opt = Convert.ToInt16(res);
 
@@ -67,6 +66,7 @@ namespace outlook
 
         static void  Filtrar()
         {
+            Console.Clear();
             //Console.WriteLine("**********FILTROS**************");
             Console.WriteLine("                 FILTROS                   ");
             Console.WriteLine("===========================================");

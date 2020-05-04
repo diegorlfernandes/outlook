@@ -17,21 +17,22 @@ namespace outlook
         private static Dictionary<int, string> controle;
         private static Int16 ordem;
         private static Int16 contador;
+        private static DB db; 
 
 
         public EmailSearch()
         {
             app = new Microsoft.Office.Interop.Outlook.Application();
             outlookNs = app.GetNamespace("MAPI");
+            db = new DB();
 
         }
 
-        public List<MailItem> Ler(Enum.TiposProcessamentos tiposProcessamentos)
+        public void Indexar(Enum.TiposProcessamentos tiposProcessamentos)
         {
+            Console.WriteLine("Atualizando indice...");
 
             contador = 1;
-
-            List<MailItem> mailItems = new List<MailItem>();
 
             foreach (Store store in outlookNs.Stores)
             {
@@ -45,25 +46,25 @@ namespace outlook
                     {
                         if (folder.Name.Contains("Entrada") || folder.Name.Contains("Enviado") || folder.Name.Contains("Recebido") || folder.Name.Contains("Arquivo"))
                         {
-                            ObterEmails(mailItems, folder);
-
+                            db.ApagarTodos();
+                            GravarEmailPorPastas(folder, tiposProcessamentos);
                         }
                     }
                     else if (tiposProcessamentos == Enum.TiposProcessamentos.Caixa_Entrada)
                     {
                         if (folder.Name.Contains("Entrada"))
                         {
-                            ObterEmails(mailItems, folder);
+                            GravarEmailPorPastas(folder, tiposProcessamentos);
                         }
                     }
 
                 }
 
             }
-            return mailItems;
-        }
 
-        private static void ObterEmails(List<MailItem> mailItems, Folder folder)
+        }
+ 
+        private static void GravarEmailPorPastas(Folder folder, Enum.TiposProcessamentos tiposProcessamentos)
         {
             Items items = folder.Items;
 
@@ -79,10 +80,12 @@ namespace outlook
                         if (String.IsNullOrEmpty(mailItem.SenderName) || String.IsNullOrEmpty(mailItem.Subject))
                             continue;
 
-                        mailItems.Add(mailItem);
+                        if (tiposProcessamentos == Enum.TiposProcessamentos.Todos_Emails)
+                            db.Inserir(mailItem.EntryID, mailItem.SenderName, mailItem.Subject, mailItem.ReceivedTime.ToString());
+                        else
+                            db.PesquisareInserir(mailItem.EntryID, mailItem.SenderName, mailItem.Subject, mailItem.ReceivedTime.ToString());
+
                     }
-                    //Console.SetCursorPosition(1,5);
-                    //Console.Write("Processando item " + contador + " de " + items.Count);
                     contador++;
 
                 }
@@ -94,7 +97,7 @@ namespace outlook
 
             foreach (Folder subfolder in folder.Folders)
             {
-                ObterEmails(mailItems, subfolder);
+                GravarEmailPorPastas(subfolder, tiposProcessamentos);
             }
         }
 
@@ -105,7 +108,6 @@ namespace outlook
             ordem = 1;
 
             controle = new Dictionary<int, string>();
-
 
             Console.Write("ID".PadRight(6, ' '));
             Console.Write("SenderName ".PadRight(50, ' '));
@@ -138,29 +140,10 @@ namespace outlook
         }
 
 
-        public void Indexar(Enum.TiposProcessamentos tiposProcessamentos)
-        {
-            Console.WriteLine("Atualizando indice...");
-
-            var list = Ler(tiposProcessamentos);
- 
-            DB db = new DB();
-
-
-            foreach (var item in list)
-                db.Inserir(item.EntryID, item.SenderName, item.Subject, item.ReceivedTime.ToString());
-
-            db = null;
-
-        }
-
         public List<DataRow> LerTodosEmailsIdenxados(string SenderName = null, string Subject = null)
         {
             DB db = new DB();
-
             return db.ObterTodos(SenderName, Subject);
-
-
         }
 
         public void Abrir(int ID)

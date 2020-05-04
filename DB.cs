@@ -35,9 +35,9 @@ namespace outlook
 
         }
 
-        public bool Inserir(string EntryID, string SenderName, string Subject, string Date)
+        public bool PesquisareInserir(string EntryID, string SenderName, string Subject, string Date)
         {
-            if(ObterPorID(EntryID).Count == 0)
+            if (ObterPorID(EntryID).Count == 0)
             {
                 SqliteTransaction transaction = connection.BeginTransaction();
                 SqliteCommand command = connection.CreateCommand();
@@ -61,9 +61,28 @@ namespace outlook
             return true;
 
         }
+        public bool Inserir(string EntryID, string SenderName, string Subject, string Date)
+        {
+            SqliteTransaction transaction = connection.BeginTransaction();
+            SqliteCommand command = connection.CreateCommand();
+            command.Transaction = transaction;
+            command.CommandText = "insert into email ( EntryID, SenderName, Subject, Date ) values ( $EntryID, $SenderName, $Subject, $Date ) ";
+            command.Parameters.AddWithValue("$EntryID", EntryID);
+            command.Parameters.AddWithValue("$SenderName", SenderName);
+            command.Parameters.AddWithValue("$Subject", Subject);
+            command.Parameters.AddWithValue("$Date", Date);
+            int ret = command.ExecuteNonQuery();
+            transaction.Commit();
 
 
-        public List<DataRow> ObterTodos(string SenderName="", string Subject=null)
+            if (ret == 0)
+                return true;
+            else
+                return false;
+        }
+
+
+        public List<DataRow> ObterTodos(string SenderName = "", string Subject = null)
         {
 
             SqliteCommand command = connection.CreateCommand();
@@ -94,6 +113,23 @@ namespace outlook
 
 
             return dr;
+
+        }
+
+        public bool ApagarTodos()
+        {
+            SqliteTransaction transaction = connection.BeginTransaction();
+
+            SqliteCommand command = connection.CreateCommand();
+            command.CommandText = @"delete FROM email";
+            int ret = command.ExecuteNonQuery();
+            transaction.Commit();
+
+
+            if (ret == 0)
+                return true;
+            else
+                return false;
 
         }
 
