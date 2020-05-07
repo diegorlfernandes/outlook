@@ -30,6 +30,8 @@ D:\Projetos\outlook\bin\Release\runtimes\win-x86\native\e_sqlite3.dll
 D:\Projetos\outlook\bin\Release\runtimes\win-x64\native\e_sqlite3.dll
 D:\Projetos\outlook\bin\Release\runtimes\win-arm\native\e_sqlite3.dll
 D:\Projetos\outlook\bin\Release\OutlookSearch.exe.config
+D:\Projetos\outlook\bin\Release\OutlookSearch.exe.manifest
+D:\Projetos\outlook\bin\Release\OutlookSearch.application
 D:\Projetos\outlook\bin\Release\OutlookSearch.exe
 D:\Projetos\outlook\bin\Release\OutlookSearch.pdb
 D:\Projetos\outlook\bin\Release\Aspose.Email.dll
@@ -50,6 +52,9 @@ D:\Projetos\outlook\bin\Release\System.Buffers.xml
 D:\Projetos\outlook\bin\Release\System.Memory.xml
 D:\Projetos\outlook\bin\Release\System.Numerics.Vectors.xml
 D:\Projetos\outlook\bin\Release\System.Runtime.CompilerServices.Unsafe.xml
+D:\Projetos\outlook\obj\Release\OutlookSearch.exe.manifest
+D:\Projetos\outlook\obj\Release\OutlookSearch.application
 D:\Projetos\outlook\obj\Release\OutlookSearch.csproj.CopyComplete
 D:\Projetos\outlook\obj\Release\OutlookSearch.exe
 D:\Projetos\outlook\obj\Release\OutlookSearch.pdb
+D:\Projetos\outlook\obj\Release\OutlookSearch.csprojAssemblyReference.cache

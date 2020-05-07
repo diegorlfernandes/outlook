@@ -13,7 +13,8 @@ namespace outlook
         private static SqliteConnection connection;
         public DB()
         {
-            connection = new SqliteConnection("" + new SqliteConnectionStringBuilder { DataSource = "DB" });
+            String path = System.AppDomain.CurrentDomain.BaseDirectory.ToString();
+            connection = new SqliteConnection("" + new SqliteConnectionStringBuilder { DataSource = path+"DB" });
             connection.Open();
             CriarTabelas();
         }
@@ -82,7 +83,7 @@ namespace outlook
         }
 
 
-        public List<DataRow> ObterTodos(string SenderName = "", string Subject = null)
+        public List<DataRow> ObterTodos(string SenderName = "", string Subject = "")
         {
 
             SqliteCommand command = connection.CreateCommand();
@@ -92,13 +93,13 @@ namespace outlook
                                     ($Subject = '' or upper(Subject) like $Subject)
                                     order by Date desc";
 
-            if (String.IsNullOrEmpty(SenderName))
-                command.Parameters.AddWithValue("$SenderName", SenderName);
+            if (String.IsNullOrEmpty(SenderName) | SenderName == "?")
+                command.Parameters.AddWithValue("$SenderName", "");
             else
                 command.Parameters.AddWithValue("$SenderName", "%" + SenderName + "%");
 
-            if (String.IsNullOrEmpty(Subject))
-                command.Parameters.AddWithValue("$Subject", Subject);
+            if (String.IsNullOrEmpty(Subject) | Subject == "?")
+                command.Parameters.AddWithValue("$Subject", "");
             else
                 command.Parameters.AddWithValue("$Subject", "%" + Subject + "%");
 

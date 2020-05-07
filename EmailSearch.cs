@@ -1,4 +1,6 @@
-﻿using Microsoft.Office.Interop.Outlook;
+﻿using EasyConsole;
+using Microsoft.Office.Interop.Outlook;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -6,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 using Outlook = Microsoft.Office.Interop.Outlook;
 
 namespace outlook
@@ -17,15 +20,27 @@ namespace outlook
         private static Dictionary<int, string> controle;
         private static Int16 ordem;
         private static Int16 contador;
-        private static DB db; 
+        private static DB db;
 
 
         public EmailSearch()
         {
-            app = new Microsoft.Office.Interop.Outlook.Application();
+            app = GetApplicationObject();
             outlookNs = app.GetNamespace("MAPI");
             db = new DB();
 
+        }
+
+        Outlook.Application GetApplicationObject()
+        {
+
+            Outlook.Application application = null;
+            if (Process.GetProcessesByName("OUTLOOK").Count() > 0)
+                application = Marshal.GetActiveObject("Outlook.Application") as Outlook.Application;
+            else
+                application = new Outlook.Application();
+
+            return application;
         }
 
         public void Indexar(Enum.TiposProcessamentos tiposProcessamentos)
@@ -63,7 +78,7 @@ namespace outlook
             }
 
         }
- 
+
         private static void GravarEmailPorPastas(Folder folder, Enum.TiposProcessamentos tiposProcessamentos)
         {
             Items items = folder.Items;
@@ -102,7 +117,7 @@ namespace outlook
         }
 
 
-        public void Imprimir(string _Sender = null, string _Subject = null)
+        public void Imprimir(string _Sender = "", string _Subject = "")
         {
             var ListaEmails = LerTodosEmailsIdenxados(_Sender, _Subject);
             ordem = 1;
@@ -111,7 +126,7 @@ namespace outlook
 
             Console.Write("ID".PadRight(6, ' '));
             Console.Write("SenderName ".PadRight(50, ' '));
-            Console.Write("Subject ".PadRight(150, ' '));
+            Console.Write("Subject ".PadRight(100, ' '));
             Console.WriteLine("Date ".PadRight(20, ' '));
 
             foreach (var mailItem in ListaEmails)
@@ -129,27 +144,39 @@ namespace outlook
                     Console.Write(SenderName.PadRight(50, ' '));
 
                 if (!String.IsNullOrEmpty(Subject))
-                    Console.Write(Subject.PadRight(150, ' '));
+                    Console.Write(Subject.PadRight(100, ' '));
 
                 Console.WriteLine(Date.PadRight(20, ' '));
 
                 ordem++;
 
             }
-
+            Abrir();
         }
 
 
-        public List<DataRow> LerTodosEmailsIdenxados(string SenderName = null, string Subject = null)
+
+        public List<DataRow> LerTodosEmailsIdenxados(string SenderName = "", string Subject = "")
         {
             DB db = new DB();
             return db.ObterTodos(SenderName, Subject);
         }
 
-        public void Abrir(int ID)
+        public void Abrir()
         {
+
+ 
+            int ID = Input.ReadInt("Abrir: ", 1, 99999);
+
+            Process p = Process.Start("C:\\Program Files\\Microsoft Office\\root\\Office16\\OUTLOOK.EXE");
+            
+            Thread.Sleep(600);
             var item = outlookNs.GetItemFromID(controle[ID]) as MailItem;
             item.Display();
+
+            outlookNs = null;
+            p.Close();
+            p.Dispose();
         }
 
     }
