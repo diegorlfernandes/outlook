@@ -11,6 +11,7 @@ namespace outlook
     public class DB
     {
         private static SqliteConnection connection;
+        private static SqliteTransaction transaction;
         public DB()
         {
             String path = System.AppDomain.CurrentDomain.BaseDirectory.ToString();
@@ -21,18 +22,18 @@ namespace outlook
 
         private void CriarTabelas()
         {
+            CreateTrasaction();
             string sql = @"CREATE TABLE IF NOT EXISTS email(
                         EntryID text PRIMARY KEY,
                         SenderName text,
                         Subject text,
                         Date text);";
 
-            SqliteTransaction transaction = connection.BeginTransaction();
             SqliteCommand command = connection.CreateCommand();
             command.Transaction = transaction;
             command.CommandText = sql;
             _ = command.ExecuteNonQuery();
-            transaction.Commit();
+            commit();
 
         }
 
@@ -40,7 +41,6 @@ namespace outlook
         {
             if (ObterPorID(EntryID).Count == 0)
             {
-                SqliteTransaction transaction = connection.BeginTransaction();
                 SqliteCommand command = connection.CreateCommand();
                 command.Transaction = transaction;
                 command.CommandText = "insert into email ( EntryID, SenderName, Subject, Date ) values ( $EntryID, $SenderName, $Subject, $Date ) ";
@@ -49,7 +49,6 @@ namespace outlook
                 command.Parameters.AddWithValue("$Subject", Subject);
                 command.Parameters.AddWithValue("$Date", Date);
                 int ret = command.ExecuteNonQuery();
-                transaction.Commit();
 
 
                 if (ret == 0)
@@ -62,9 +61,20 @@ namespace outlook
             return true;
 
         }
+
+        public void CreateTrasaction()
+        {
+            transaction = connection.BeginTransaction();
+        }
+
+        public void commit()
+        {
+            transaction.Commit();
+        }
+
+
         public bool Inserir(string EntryID, string SenderName, string Subject, string Date)
         {
-            SqliteTransaction transaction = connection.BeginTransaction();
             SqliteCommand command = connection.CreateCommand();
             command.Transaction = transaction;
             command.CommandText = "insert into email ( EntryID, SenderName, Subject, Date ) values ( $EntryID, $SenderName, $Subject, $Date ) ";
@@ -73,7 +83,6 @@ namespace outlook
             command.Parameters.AddWithValue("$Subject", Subject);
             command.Parameters.AddWithValue("$Date", Date);
             int ret = command.ExecuteNonQuery();
-            transaction.Commit();
 
 
             if (ret == 0)
@@ -83,7 +92,7 @@ namespace outlook
         }
 
 
-        public List<DataRow> ObterTodos(string SenderName = "", string Subject = "")
+        public List<DataRow> ObterComFiltro(string SenderName = "", string Subject = "")
         {
 
             SqliteCommand command = connection.CreateCommand();
@@ -91,7 +100,7 @@ namespace outlook
                                     where 
                                     ($SenderName = '' or upper(SenderName) like $SenderName) AND
                                     ($Subject = '' or upper(Subject) like $Subject)
-                                    order by Date desc";
+                                    order by substr(date,7,4)||substr(date,4,2)||substr(date,1,2) desc";
 
             if (String.IsNullOrEmpty(SenderName) | SenderName == "?")
                 command.Parameters.AddWithValue("$SenderName", "");

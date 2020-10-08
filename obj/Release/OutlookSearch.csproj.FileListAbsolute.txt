@@ -52,9 +52,10 @@ D:\Projetos\outlook\bin\Release\System.Buffers.xml
 D:\Projetos\outlook\bin\Release\System.Memory.xml
 D:\Projetos\outlook\bin\Release\System.Numerics.Vectors.xml
 D:\Projetos\outlook\bin\Release\System.Runtime.CompilerServices.Unsafe.xml
+D:\Projetos\outlook\obj\Release\OutlookSearch.csprojAssemblyReference.cache
+D:\Projetos\outlook\obj\Release\OutlookSearch.csproj.CoreCompileInputs.cache
 D:\Projetos\outlook\obj\Release\OutlookSearch.exe.manifest
 D:\Projetos\outlook\obj\Release\OutlookSearch.application
 D:\Projetos\outlook\obj\Release\OutlookSearch.csproj.CopyComplete
 D:\Projetos\outlook\obj\Release\OutlookSearch.exe
 D:\Projetos\outlook\obj\Release\OutlookSearch.pdb
-D:\Projetos\outlook\obj\Release\OutlookSearch.csprojAssemblyReference.cache

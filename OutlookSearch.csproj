@@ -118,6 +118,7 @@
     <Compile Include="DB.cs" />
     <Compile Include="EmailSearch.cs" />
     <Compile Include="Enum.cs" />
+    <Compile Include="GravarLog.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

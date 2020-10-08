@@ -1,0 +1,72 @@
+
+Log Entrada : 10:48:27 quinta-feira, 6 de agosto de 2020
+  :
+  :erro:O inicializador de tipo de 'outlook.Program' acionou uma exceção.   em outlook.Program.Main(String[] args) na D:\Projetos\outlook\Program.cs:linha 24
+------------------------------------
+
+Log Entrada : 10:50:10 quinta-feira, 6 de agosto de 2020
+  :
+  :erro:O inicializador de tipo de 'outlook.Program' acionou uma exceção.   em outlook.Program.Main(String[] args) na D:\Projetos\outlook\Program.cs:linha 24System.Runtime.InteropServices.COMException (0x80070520): Falha na recuperação de fábrica de classes COM do componente com CLSID {0006F03A-0000-0000-C000-000000000046} devido ao seguinte erro: 80070520 A sessão de logon especificada não existe. Talvez ela já tenha sido finalizada. (Exceção de HRESULT: 0x80070520).
+   em System.Runtime.Remoting.RemotingServices.AllocateUninitializedObject(RuntimeType objectType)
+   em System.Runtime.Remoting.Activation.ActivationServices.CreateInstance(RuntimeType serverType)
+   em System.Runtime.Remoting.Activation.ActivationServices.IsCurrentContextOK(RuntimeType serverType, Object[] props, Boolean bNewObj)
+   em System.RuntimeTypeHandle.CreateInstance(RuntimeType type, Boolean publicOnly, Boolean noCheck, Boolean& canBeCached, RuntimeMethodHandleInternal& ctor, Boolean& bNeedSecurityCheck)
+   em System.RuntimeType.CreateInstanceSlow(Boolean publicOnly, Boolean skipCheckThis, Boolean fillCache, StackCrawlMark& stackMark)
+   em System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean skipCheckThis, Boolean fillCache, StackCrawlMark& stackMark)
+   em System.Activator.CreateInstance(Type type, Boolean nonPublic)
+   em System.Activator.CreateInstance(Type type)
+   em outlook.EmailSearch.GetApplicationObject() na D:\Projetos\outlook\EmailSearch.cs:linha 42
+   em outlook.EmailSearch..ctor() na D:\Projetos\outlook\EmailSearch.cs:linha 26
+   em outlook.Program..cctor() na D:\Projetos\outlook\Program.cs:linha 10
+------------------------------------
+
+Log Entrada : 10:50:58 quinta-feira, 6 de agosto de 2020
+  :
+  :erro:O inicializador de tipo de 'outlook.Program' acionou uma exceção.   em outlook.Program.Main(String[] args) na D:\Projetos\outlook\Program.cs:linha 24System.Runtime.InteropServices.COMException (0x80070520): Falha na recuperação de fábrica de classes COM do componente com CLSID {0006F03A-0000-0000-C000-000000000046} devido ao seguinte erro: 80070520 A sessão de logon especificada não existe. Talvez ela já tenha sido finalizada. (Exceção de HRESULT: 0x80070520).
+   em System.Runtime.Remoting.RemotingServices.AllocateUninitializedObject(RuntimeType objectType)
+   em System.Runtime.Remoting.Activation.ActivationServices.CreateInstance(RuntimeType serverType)
+   em System.Runtime.Remoting.Activation.ActivationServices.IsCurrentContextOK(RuntimeType serverType, Object[] props, Boolean bNewObj)
+   em System.RuntimeTypeHandle.CreateInstance(RuntimeType type, Boolean publicOnly, Boolean noCheck, Boolean& canBeCached, RuntimeMethodHandleInternal& ctor, Boolean& bNeedSecurityCheck)
+   em System.RuntimeType.CreateInstanceSlow(Boolean publicOnly, Boolean skipCheckThis, Boolean fillCache, StackCrawlMark& stackMark)
+   em System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean skipCheckThis, Boolean fillCache, StackCrawlMark& stackMark)
+   em System.Activator.CreateInstance(Type type, Boolean nonPublic)
+   em System.Activator.CreateInstance(Type type)
+   em outlook.EmailSearch.GetApplicationObject() na D:\Projetos\outlook\EmailSearch.cs:linha 42
+   em outlook.EmailSearch..ctor() na D:\Projetos\outlook\EmailSearch.cs:linha 26
+   em outlook.Program..cctor() na D:\Projetos\outlook\Program.cs:linha 10
+------------------------------------
+
+Log Entrada : 10:56:54 quinta-feira, 6 de agosto de 2020
+  :
+  :Atualizando indice...
+------------------------------------
+
+Log Entrada : 10:56:55 quinta-feira, 6 de agosto de 2020
+  :
+  :Processando todos os e-mails...
+------------------------------------
+
+Log Entrada : 10:56:55 quinta-feira, 6 de agosto de 2020
+  :
+  :Atualizando pasta: Caixa de Entrada Qtd itens:958
+------------------------------------
+
+Log Entrada : 10:57:00 quinta-feira, 6 de agosto de 2020
+  :
+  :Atualizando pasta: Itens Enviados Qtd itens:323
+------------------------------------
+
+Log Entrada : 10:57:02 quinta-feira, 6 de agosto de 2020
+  :
+  :Atualizando pasta: Enviados Qtd itens:684
+------------------------------------
+
+Log Entrada : 10:57:05 quinta-feira, 6 de agosto de 2020
+  :
+  :Atualizando pasta: Recebidos Qtd itens:7887
+------------------------------------
+
+Log Entrada : 10:57:47 quinta-feira, 6 de agosto de 2020
+  :
+  :Total de e-mails processados:9014
+------------------------------------

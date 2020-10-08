@@ -1,12 +1,11 @@
 ﻿using EasyConsole;
 using Microsoft.Office.Interop.Outlook;
-using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Outlook = Microsoft.Office.Interop.Outlook;
@@ -21,6 +20,7 @@ namespace outlook
         private static Int16 ordem;
         private static Int16 contador;
         private static DB db;
+        private static GravarLog GravarLog;
 
 
         public EmailSearch()
@@ -28,6 +28,7 @@ namespace outlook
             app = GetApplicationObject();
             outlookNs = app.GetNamespace("MAPI");
             db = new DB();
+            GravarLog = new GravarLog();
 
         }
 
@@ -45,9 +46,16 @@ namespace outlook
 
         public void Indexar(Enum.TiposProcessamentos tiposProcessamentos)
         {
-            Console.WriteLine("Atualizando indice...");
+            GravarLog.Log("Atualizando indice...");
 
             contador = 1;
+            db.ApagarTodos();
+
+            if (tiposProcessamentos == Enum.TiposProcessamentos.Todos_Emails)
+                GravarLog.Log("Processando todos os e-mails...");
+            else if (tiposProcessamentos == Enum.TiposProcessamentos.Caixa_Entrada)
+                GravarLog.Log("Processando apenas caixa de entrada...");
+
 
             foreach (Store store in outlookNs.Stores)
             {
@@ -55,34 +63,31 @@ namespace outlook
 
                 Folders subFolders = rootFolder.Folders;
 
-                foreach (Folder folder in subFolders)
+                if (tiposProcessamentos == Enum.TiposProcessamentos.Todos_Emails)
                 {
-                    if (tiposProcessamentos == Enum.TiposProcessamentos.Todos_Emails)
-                    {
-                        if (folder.Name.Contains("Entrada") || folder.Name.Contains("Enviado") || folder.Name.Contains("Recebido") || folder.Name.Contains("Arquivo"))
-                        {
-                            db.ApagarTodos();
+                    foreach (Folder folder in subFolders)
+                        if (folder.Name.Contains("Entrada") || folder.Name.Contains("Enviado") || folder.Name.Contains("Recebido"))
                             GravarEmailPorPastas(folder, tiposProcessamentos);
-                        }
-                    }
-                    else if (tiposProcessamentos == Enum.TiposProcessamentos.Caixa_Entrada)
-                    {
+                }
+                else if (tiposProcessamentos == Enum.TiposProcessamentos.Caixa_Entrada)
+                {
+                    foreach (Folder folder in subFolders)
                         if (folder.Name.Contains("Entrada"))
-                        {
                             GravarEmailPorPastas(folder, tiposProcessamentos);
-                        }
-                    }
-
                 }
 
             }
+
+            GravarLog.Log("Total de e-mails processados:" + Convert.ToString(contador));
+
 
         }
 
         private static void GravarEmailPorPastas(Folder folder, Enum.TiposProcessamentos tiposProcessamentos)
         {
+            GravarLog.Log("Atualizando pasta: " + folder.Name + " Qtd itens:" + folder.Items.Count);
             Items items = folder.Items;
-
+            db.CreateTrasaction();
 
             foreach (object item in items)
             {
@@ -96,12 +101,19 @@ namespace outlook
                             continue;
 
                         if (tiposProcessamentos == Enum.TiposProcessamentos.Todos_Emails)
+                        {
+                            //mailItem.SaveAs("d:\\emails\\");
                             db.Inserir(mailItem.EntryID, mailItem.SenderName, mailItem.Subject, mailItem.ReceivedTime.ToString());
+                        }
                         else
+                        {
+                            //mailItem.SaveAs("d:\\emails\\");
                             db.PesquisareInserir(mailItem.EntryID, mailItem.SenderName, mailItem.Subject, mailItem.ReceivedTime.ToString());
+                        }
 
                     }
                     contador++;
+
 
                 }
                 catch
@@ -109,6 +121,7 @@ namespace outlook
                     continue;
                 }
             }
+            db.commit();
 
             foreach (Folder subfolder in folder.Folders)
             {
@@ -119,7 +132,7 @@ namespace outlook
 
         public void Imprimir(string _Sender = "", string _Subject = "")
         {
-            var ListaEmails = LerTodosEmailsIdenxados(_Sender, _Subject);
+            var ListaEmails = LerEmailsComFiltro(_Sender, _Subject);
             ordem = 1;
 
             controle = new Dictionary<int, string>();
@@ -156,20 +169,20 @@ namespace outlook
 
 
 
-        public List<DataRow> LerTodosEmailsIdenxados(string SenderName = "", string Subject = "")
+        public List<DataRow> LerEmailsComFiltro(string SenderName = "", string Subject = "")
         {
             DB db = new DB();
-            return db.ObterTodos(SenderName, Subject);
+            return db.ObterComFiltro(SenderName, Subject);
         }
 
         public void Abrir()
         {
 
- 
+
             int ID = Input.ReadInt("Abrir: ", 1, 99999);
 
             Process p = Process.Start("C:\\Program Files\\Microsoft Office\\root\\Office16\\OUTLOOK.EXE");
-            
+
             Thread.Sleep(600);
             var item = outlookNs.GetItemFromID(controle[ID]) as MailItem;
             item.Display();

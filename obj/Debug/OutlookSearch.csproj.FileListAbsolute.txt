@@ -58,3 +58,4 @@ D:\Projetos\outlook\bin\Debug\OutlookSearch.exe.manifest
 D:\Projetos\outlook\bin\Debug\OutlookSearch.application
 D:\Projetos\outlook\obj\Debug\OutlookSearch.exe.manifest
 D:\Projetos\outlook\obj\Debug\OutlookSearch.application
+D:\Projetos\outlook\obj\Debug\OutlookSearch.csproj.CoreCompileInputs.cache
